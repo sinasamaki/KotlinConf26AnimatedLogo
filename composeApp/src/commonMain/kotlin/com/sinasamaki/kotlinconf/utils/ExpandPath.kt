@@ -1,4 +1,4 @@
-package com.sinasamaki.kotlinconf
+package com.sinasamaki.kotlinconf.utils
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.geometry.Offset

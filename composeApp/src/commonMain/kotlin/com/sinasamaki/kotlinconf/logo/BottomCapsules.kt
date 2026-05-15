@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.drawscope.clipPath
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.unit.dp
-import com.sinasamaki.kotlinconf.expandPathCubic
+import com.sinasamaki.kotlinconf.utils.expandPathCubic
 import com.sinasamaki.kotlinconf.utils.oscillateToZero
 import androidx.compose.ui.tooling.preview.Preview
 

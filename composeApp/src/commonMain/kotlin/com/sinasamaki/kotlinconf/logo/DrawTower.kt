@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
-import com.sinasamaki.kotlinconf.expandPathCubic
+import com.sinasamaki.kotlinconf.utils.expandPathCubic
 import com.sinasamaki.kotlinconf.utils.lineTo
 import com.sinasamaki.kotlinconf.utils.moveTo
 import androidx.compose.ui.tooling.preview.Preview

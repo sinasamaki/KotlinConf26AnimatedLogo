@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.unit.dp
-import com.sinasamaki.kotlinconf.expandPathCubic
+import com.sinasamaki.kotlinconf.utils.expandPathCubic
 import androidx.compose.ui.tooling.preview.Preview
 
 fun DrawScope.opposingCircles(
