@@ -1,12 +1,12 @@
 ![KotlinConf 2026 Animated Logo](images/image.webp)
 
-# KotlinConf '26 Animated Logo
-
-An animated recreation of the KotlinConf 2026 logo, built with Compose Multiplatform. The logo is drawn entirely in code using Compose's `DrawScope` APIs, no images, just paths, arcs, and curves, and features a looping animation that brings the geometry to life.
-
 <a href="https://sinasamaki.github.io/KotlinConf26AnimatedLogo/">
   <img src="https://img.shields.io/badge/View%20Live%20Demo-%E2%86%92-7F52FF?style=for-the-badge&labelColor=1a1a1a" alt="View Live Demo" />
 </a>
+
+# KotlinConf '26 Animated Logo
+
+An animated recreation of the KotlinConf 2026 logo, built with Compose Multiplatform. The logo is drawn entirely in code using Compose's `DrawScope` APIs, no images, just paths, arcs, and curves, and features a looping animation that brings the geometry to life.
 
 This project was created as a companion to my talk at KotlinConf 2026:
 **[Drawing with Compose: Beyond the Basics](https://kotlinconf.com/speakers/63282805-74de-414a-aafe-7c9eb392e896/)**
