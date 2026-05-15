@@ -4,7 +4,9 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,10 +25,14 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.sinasamaki.kotlinconf.utils.lineTo
 import com.sinasamaki.kotlinconf.utils.moveTo
 import com.sinasamaki.kotlinconf.utils.oscillateToZero
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun KotlinLogo(modifier: Modifier = Modifier) {
@@ -187,5 +193,18 @@ fun KotlinLogo(modifier: Modifier = Modifier) {
                 }
             }
     ) {
+    }
+}
+
+@Preview
+@Composable
+private fun KotlinLogoPreview() {
+    Box(
+        modifier = Modifier
+            .background(Color.Black)
+            .size(300.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        KotlinLogo(modifier = Modifier.size(300.dp))
     }
 }
