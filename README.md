@@ -1,76 +1,85 @@
-This is a Kotlin Multiplatform project targeting Android, iOS, Web, Desktop (JVM).
+![KotlinConf 2026 Animated Logo](images/image.webp)
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+# KotlinConf '26 Animated Logo
 
-* [/iosApp](./iosApp/iosApp) contains iOS applications. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+An animated recreation of the KotlinConf 2026 logo, built with Compose Multiplatform. The logo is drawn entirely in code using Compose's `DrawScope` APIs, no images, just paths, arcs, and curves, and features a looping animation that brings the geometry to life.
 
-### Build and Run Android Application
+<a href="https://sinasamaki.github.io/KotlinConf26AnimatedLogo/">
+  <img src="https://img.shields.io/badge/View%20Live%20Demo-%E2%86%92-7F52FF?style=for-the-badge&labelColor=1a1a1a" alt="View Live Demo" />
+</a>
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+This project was created as a companion to my talk at KotlinConf 2026:
+**[Drawing with Compose: Beyond the Basics](https://kotlinconf.com/speakers/63282805-74de-414a-aafe-7c9eb392e896/)**
 
-### Build and Run Desktop (JVM) Application
+> The original KotlinConf graphic is the property of JetBrains. This project is an independent fan recreation made for educational purposes. I am not affiliated with JetBrains.
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+## Targets
 
-### Build and Run Web Application
+The app runs on all Compose Multiplatform targets:
 
-To build and run the development version of the web app, use the run configuration from the run widget
-in your IDE's toolbar or run it directly from the terminal:
-- for the Wasm target (faster, modern browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :composeApp:wasmJsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :composeApp:wasmJsBrowserDevelopmentRun
-    ```
-- for the JS target (slower, supports older browsers):
-  - on macOS/Linux
-    ```shell
-    ./gradlew :composeApp:jsBrowserDevelopmentRun
-    ```
-  - on Windows
-    ```shell
-    .\gradlew.bat :composeApp:jsBrowserDevelopmentRun
-    ```
+| Platform | Entry point |
+|----------|-------------|
+| Android | `composeApp` Android run configuration |
+| iOS | `iosApp` in Xcode |
+| Desktop (JVM) | `./gradlew :composeApp:run` |
+| Web (WasmJS) | `./gradlew :composeApp:wasmJsBrowserDevelopmentRun` |
+| Web (JS fallback) | `./gradlew :composeApp:jsBrowserDevelopmentRun` |
 
-### Build and Run iOS Application
+## How it works
 
-To build and run the development version of the iOS app, use the run configuration from the run widget
-in your IDE’s toolbar or open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+The logo geometry lives in `composeApp/src/commonMain/.../logo/`. Each visual element is a separate `DrawScope` extension function with its own file and `@Preview`:
 
----
+- `DrawBoundary` - the structural grid lines
+- `DrawTower` - the central tower with animated clock hands
+- `DrawOlympicTrack` - expanding concentric rings
+- `OpposingCircles` - two capsule shapes sliding apart
+- `DrawHeart` - a heartbeat-scaled heart
+- `DrawParallelLines` - animated hatching, clipped to arbitrary shapes
+- `DrawPretzel` - a rocking pretzel
+- `DrawMascot` - the blinking mascot
+- `BottomCapsules` - sliding bottom capsule pair
+- `GrowingSemiCircles` - growing arcs stepping through a bounding rect
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html),
-[Compose Multiplatform](https://github.com/JetBrains/compose-multiplatform/#compose-multiplatform),
-[Kotlin/Wasm](https://kotl.in/wasm/)…
+All animations are driven by a single `progress: Float` (0 to 1, 4 seconds, linear, looping) produced in `KotlinLogo` and passed into each draw function:
 
-We would appreciate your feedback on Compose/Web and Kotlin/Wasm in the public Slack channel [#compose-web](https://slack-chats.kotlinlang.org/c/compose-web).
-If you face any issues, please report them on [YouTrack](https://youtrack.jetbrains.com/newIssue?project=CMP).
+```kotlin
+val progress = remember { Animatable(0f) }
+LaunchedEffect(Unit) {
+    while (true) {
+        progress.animateTo(
+            targetValue = 1f,
+            animationSpec = tween(durationMillis = 4000, easing = LinearEasing)
+        )
+        progress.snapTo(0f)
+    }
+}
+```
+
+Some elements use `oscillateToZero` to create effects that pulse rather than sweep linearly. It maps the 0-to-1 progress through a cosine so the value rises and falls back to zero over a given number of peaks:
+
+```kotlin
+fun Float.oscillateToZero(peaks: Int): Float {
+    return (1f - cos(2 * peaks * PI.toFloat() * this)) / 2f
+}
+
+// usage: the pretzel rocks back and forth 5 times per cycle
+rotate(
+    degrees = lerp(-4f, 4f, progress.oscillateToZero(5)),
+    pivot = Offset(15f, 117f)
+) { ... }
+```
+
+Shapes are defined as `Path` objects and stroked with a shared gradient brush. A helper function `expandPathCubic` takes any line path and expands it outward by a padding amount with configurable rounded corners, turning a bare line into a capsule, stadium, or custom pill shape:
+
+```kotlin
+// a line becomes a capsule
+val capsule = expandPathCubic(
+    source = Path().apply {
+        moveTo(28f, 117f)
+        lineTo(58f, 117f)
+    },
+    padding = 11f,
+    cornerRadius = RoundedCornerShape(percent = 50),
+)
+drawPath(capsule, brush = brush, style = Stroke(width = strokeWidth))
+```
